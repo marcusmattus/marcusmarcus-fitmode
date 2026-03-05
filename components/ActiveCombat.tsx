@@ -9,10 +9,12 @@ import {
   type PoseLandmarkerResult,
 } from '@mediapipe/tasks-vision';
 
-const WASM_ROOT =
-  'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.32/wasm';
+const TASKS_VISION_VERSION = '0.10.32';
+const WASM_ROOT = `https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@${TASKS_VISION_VERSION}/wasm`;
 const MODEL_ASSET =
   'https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_lite/float16/latest/pose_landmarker_lite.task';
+const HIP_DEPTH_THRESHOLD = 0.68;
+const HIP_RISE_THRESHOLD = 0.5;
 
 export default function ActiveCombat() {
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -51,6 +53,9 @@ export default function ActiveCombat() {
     };
 
     const updateRepCount = (results: PoseLandmarkerResult) => {
+      if (!results.landmarks.length) {
+        return;
+      }
       const landmarks = results.landmarks[0];
       if (!landmarks?.length) {
         return;
@@ -61,11 +66,11 @@ export default function ActiveCombat() {
         return;
       }
       const hipY = (leftHip.y + rightHip.y) / 2;
-      if (hipY > 0.68 && repState.current === 'up') {
+      if (hipY > HIP_DEPTH_THRESHOLD && repState.current === 'up') {
         repState.current = 'down';
         setFormCue('DROP THOSE HIPS!');
       }
-      if (hipY < 0.5 && repState.current === 'down') {
+      if (hipY < HIP_RISE_THRESHOLD && repState.current === 'down') {
         repState.current = 'up';
         setRepCount(prev => prev + 1);
         setPowerPercent(prev => Math.min(100, prev + 1));
