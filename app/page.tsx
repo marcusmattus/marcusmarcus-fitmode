@@ -1,6 +1,7 @@
 'use client';
 import React, { useState } from 'react';
-import ActiveWorkout from '@/components/ActiveWorkout';
+import Image from 'next/image';
+import ActiveCombat from '@/components/ActiveCombat';
 import MapTracker from '@/components/MapTracker';
 import NutritionScanner from '@/components/NutritionScanner';
 import CoachChat from '@/components/CoachChat';
@@ -12,10 +13,17 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen bg-[#F0F0F0] text-black p-4 md:p-8 selection:bg-[#FF2E63] selection:text-white flex flex-col">
       {/* Header */}
-      <header className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
+      <header className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8 border-4 border-black bg-white p-4 shadow-brutal">
         <div className="flex items-center gap-4">
-          <div className="w-12 h-12 border-4 border-black overflow-hidden bg-gradient-to-br from-[#7DF9FF] to-[#FF2E63] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] flex items-center justify-center">
-            <span className="font-black text-xl text-black tracking-tighter">FM</span>
+          <div className="w-12 h-12 border-4 border-black overflow-hidden bg-[#7DF9FF] shadow-brutal flex items-center justify-center">
+            <Image
+              src="/forgeflow-logo.svg"
+              alt="ForgeFlow logo"
+              width={48}
+              height={48}
+              className="w-full h-full object-cover"
+              priority
+            />
           </div>
           <h1 className="text-3xl md:text-4xl font-black tracking-tighter uppercase">ForgeFlow</h1>
         </div>
@@ -45,7 +53,7 @@ export default function Dashboard() {
 
       {/* Main Content Area */}
       <main className="flex-1 max-w-7xl w-full mx-auto">
-        {activeTab === 'train' && <ActiveWorkout />}
+        {activeTab === 'train' && <ActiveCombat />}
         {activeTab === 'trail' && <MapTracker />}
         {activeTab === 'fuel' && <NutritionScanner />}
         {activeTab === 'coach' && <div className="max-w-3xl mx-auto"><CoachChat /></div>}
