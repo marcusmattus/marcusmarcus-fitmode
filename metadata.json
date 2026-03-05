@@ -1,0 +1,8 @@
+{
+  "name": "ForgeFlow",
+  "description": "Neobrutalist AI Fitness Architecture with Computer Vision",
+  "requestFramePermissions": [
+    "camera",
+    "geolocation"
+  ]
+}
